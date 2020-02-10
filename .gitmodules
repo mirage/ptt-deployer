@@ -1,0 +1,9 @@
+[submodule "ocurrent"]
+	path = ocurrent
+	url = https://github.com/ocurrent/ocurrent.git
+[submodule "ocluster"]
+	path = ocluster
+	url = https://github.com/ocurrent/ocluster.git
+[submodule "current-albatross-deployer"]
+	path = current-albatross-deployer
+	url = https://github.com/TheLortex/current-albatross-deployer.git

@@ -20,10 +20,6 @@ module E = Current_albatross_deployer
 
 (* DNS PRIMARY GIT *)
 
-let pin_mirage_version version =
-  Current.return (fun ~network ~cache ->
-      [ Obuilder_spec.run ~network ~cache "opam install \"mirage=%s\"" version ])
-
 let daily = Current_cache.Schedule.v ~valid_for:(Duration.of_day 1) ()
 
 let config_dns_primary_git =
@@ -138,9 +134,6 @@ let v () =
 
     let config_dns_letsencrypt_secondary = config_dns_letsencrypt_secondary ~ip_dns_primary_git in
     let ip_dns_letsencrypt_secondary = get_ip config_dns_letsencrypt_secondary in
-
-    let config_cri_logger = config_cri_logger ~ip_dns_resolver in
-    let ip_cri_logger = get_ip config_cri_logger in
 
     let unikernels_to_deploy =
       [

@@ -22,4 +22,5 @@
   fmt
   lwt
   cmdliner
+  current-albatross-deployer
   (ocaml (>= 4.08.0))))

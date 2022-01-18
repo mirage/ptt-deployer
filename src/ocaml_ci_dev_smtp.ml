@@ -108,8 +108,8 @@ let v ~ip_dns_resolver ~ip_dns_primary_git =
                  "TARGET=hvt";
                  "EXTRA_FLAGS=--ipv4-gateway=10.0.0.1 --remote \
                   git@10.0.0.1:relay.git --ssh-key \
-                  rsa:gFTbNbVSAOLaQFs93nWtXDPBvvM6muWyruORR532 --domain ocaml.ci.dev \
-                  --hostname smtp.ocaml.ci.dev \
+                  rsa:gFTbNbVSAOLaQFs93nWtXDPBvvM6muWyruORR532 --domain \
+                  ocaml.ci.dev --hostname smtp.ocaml.ci.dev \
                   --dns-key=personal._update.ocaml.ci.dev:SHA256:n3ZU6y20DsOmpqGL9TpPTtVW89EX+mb0fG+0x6N+C0I= \
                   --postmaster hostmaster@ocaml.ci.dev";
                ];

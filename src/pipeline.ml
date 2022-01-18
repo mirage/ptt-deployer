@@ -29,8 +29,7 @@ let config_dns_primary_git =
          Git.clone ~schedule:daily ~gref:"main"
            "https://github.com/roburio/dns-primary-git.git"
        in
-       E.Unikernel.of_git
-         ~mirage_version:`Mirage_3
+       E.Unikernel.of_git ~mirage_version:`Mirage_3
          ~config_file:(Current.return (Fpath.v "config.ml"))
          ~args:
            (Current.return
@@ -38,7 +37,7 @@ let config_dns_primary_git =
                 "--ipv4-gateway=10.0.0.1";
                 "--axfr";
                 "--remote=git@10.0.0.1:zone.git";
-                ("--ssh-key=" ^ dns_primary_git_ssh_key) ;
+                "--ssh-key=" ^ dns_primary_git_ssh_key;
               ])
          repo
      in
@@ -56,32 +55,35 @@ let ip_dns_primary_git = get_ip config_dns_primary_git
 (* DNS LETSENCRYPT SECONDARY *)
 
 let config_dns_letsencrypt_secondary ~ip_dns_primary_git =
-  collapse ~key:"config" ~value:"dns_letsencrypt_secondary" ~label:"DNS Let's encrypt secondary"
+  collapse ~key:"config" ~value:"dns_letsencrypt_secondary"
+    ~label:"DNS Let's encrypt secondary"
   @@ let+ unikernel =
        let repo =
          Git.clone ~schedule:daily ~gref:"main"
            "https://github.com/roburio/dns-letsencrypt-secondary.git"
        in
-       E.Unikernel.of_git
-         ~mirage_version:`Mirage_3
+       E.Unikernel.of_git ~mirage_version:`Mirage_3
          ~config_file:(Current.return (Fpath.v "config.ml"))
          ~args:
            (Current.return
               [
-                 "--ipv4-gateway=10.0.0.1";
-                 ("--dns-key=" ^ dns_primary_git_personal_key);
-                 "--account-key-seed=4+R+H/SstrNqP9giaNoeJN9ccghDFI1CpCbaVAOI8yk=";
-                 "--email=admin@ptt.mail";
+                "--ipv4-gateway=10.0.0.1";
+                "--dns-key=" ^ dns_primary_git_personal_key;
+                "--account-key-seed=4+R+H/SstrNqP9giaNoeJN9ccghDFI1CpCbaVAOI8yk=";
+                "--email=admin@ptt.mail";
               ])
-           repo
+         repo
      and+ ip_dns_primary_git = ip_dns_primary_git in
      {
        E.Config.Pre.service = "dns-le";
        unikernel;
        args =
-         (fun ip -> [ "--ipv4=" ^ Ipaddr.V4.to_string ip ^ "/24"
-                    ; "--production"
-                    ; "--dns-server=" ^ Ipaddr.V4.to_string ip_dns_primary_git ]);
+         (fun ip ->
+           [
+             "--ipv4=" ^ Ipaddr.V4.to_string ip ^ "/24";
+             "--production";
+             "--dns-server=" ^ Ipaddr.V4.to_string ip_dns_primary_git;
+           ]);
        memory = 256;
        network = "br1";
      }
@@ -131,9 +133,12 @@ let v () =
   let mirage_unikernels =
     let open Current.Syntax in
     let module E = Current_albatross_deployer in
-
-    let config_dns_letsencrypt_secondary = config_dns_letsencrypt_secondary ~ip_dns_primary_git in
-    let ip_dns_letsencrypt_secondary = get_ip config_dns_letsencrypt_secondary in
+    let config_dns_letsencrypt_secondary =
+      config_dns_letsencrypt_secondary ~ip_dns_primary_git
+    in
+    let ip_dns_letsencrypt_secondary =
+      get_ip config_dns_letsencrypt_secondary
+    in
 
     let unikernels_to_deploy =
       [
@@ -142,9 +147,10 @@ let v () =
           ip_dns_primary_git,
           [ { E.Port.source = 53; target = 53 } ] );
         ("dns-resolver", config_dns_resolver, ip_dns_resolver, []);
-        ("dns-letsencrypt-secondary",
-         config_dns_letsencrypt_secondary,
-         ip_dns_letsencrypt_secondary, []);
+        ( "dns-letsencrypt-secondary",
+          config_dns_letsencrypt_secondary,
+          ip_dns_letsencrypt_secondary,
+          [] );
       ]
       @ Ocaml_ci_dev_smtp.v ~ip_dns_resolver ~ip_dns_primary_git
     in

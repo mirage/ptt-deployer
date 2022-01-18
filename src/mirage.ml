@@ -88,7 +88,7 @@ end
 module Deploy = Current_cache.Output (Op)
 module Docker = Current_docker.Default
 
-let deploy ~name ~args image =
+let[@warning "-32"] deploy ~name ~args image =
   Current.component "deploy %s" name
   |> let> image = image in
      Deploy.set Op.No_context { Op.Key.name }

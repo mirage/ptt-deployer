@@ -21,9 +21,6 @@ depends: [
   "fmt"
   "lwt"
   "cmdliner"
-  "albatross"
-  "obuilder"
-  "obuilder-spec"
   "ocaml" {>= "4.08.0"}
 ]
 build: [

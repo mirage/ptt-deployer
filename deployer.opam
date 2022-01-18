@@ -21,6 +21,7 @@ depends: [
   "fmt"
   "lwt"
   "cmdliner"
+  "current-albatross-deployer"
   "ocaml" {>= "4.08.0"}
 ]
 build: [

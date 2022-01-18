@@ -42,7 +42,7 @@ let config_dns_primary_git =
                 "--ipv4-gateway=10.0.0.1";
                 "--axfr";
                 "--remote=git@10.0.0.1:zone.git";
-                ("--ssh-key=" ^ dns_primary_git_ssh_key ;
+                ("--ssh-key=" ^ dns_primary_git_ssh_key) ;
               ])
          repo
      in

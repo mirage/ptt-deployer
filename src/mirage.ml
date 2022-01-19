@@ -67,7 +67,7 @@ module Op = struct
     validate_name name;
     Current.Job.start job ~level:Current.Level.Dangerous >>= fun () ->
     (* Extract unikernel image from Docker image: *)
-    with_tmp ~prefix:"ocurrent-deployer-" ~suffix:".hvt" @@ fun tmp_path ->
+    with_tmp ~prefix:"ptt-deployer-" ~suffix:".hvt" @@ fun tmp_path ->
     Raw.Cmd.with_container ~docker_context:None ~job ~kill_on_cancel:true
       (run image ~docker_context:None) (fun id ->
         let src = Printf.sprintf "%s:/unikernel.hvt" id in

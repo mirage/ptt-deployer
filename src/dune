@@ -1,5 +1,5 @@
 (executable
- (public_name ocurrent-deployer)
+ (public_name ptt-deployer)
  (name main)
  (libraries capnp-rpc-unix current current.cache current_git current_github
    current_docker current_ocluster current_slack current_web

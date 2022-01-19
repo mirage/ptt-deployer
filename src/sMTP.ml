@@ -31,8 +31,8 @@ let v ~ip_dns_resolver ~ip_dns_primary_git =
                [
                  "TARGET=hvt";
                  "EXTRA_FLAGS=--ipv4-gateway=10.0.0.1 --remote \
-                  git@10.0.0.1:relay.git --ssh-key rsa:" ^ ssh_key
-                 ^ " --domain " ^ smtp_domain ^ "--postmaster hostmaster@"
+                  git@10.0.0.1:relay.git --ssh-key=" ^ ssh_key
+                 ^ " --domain " ^ smtp_domain ^ " --postmaster hostmaster@"
                  ^ smtp_domain;
                ];
            }
@@ -52,7 +52,7 @@ let v ~ip_dns_resolver ~ip_dns_primary_git =
                "tcp://" ^ Ipaddr.V4.to_string ip_dns_resolver;
              ]);
          memory = 512;
-         network = "br1";
+         network = "br0";
        }
   in
   let ip_relay = get_ip config_relay in
@@ -90,7 +90,7 @@ let v ~ip_dns_resolver ~ip_dns_primary_git =
                "--destination=" ^ Ipaddr.V4.to_string ip_relay;
              ]);
          memory = 512;
-         network = "br1";
+         network = "br0";
        }
   in
   let ip_signer = get_ip config_signer in
@@ -104,7 +104,7 @@ let v ~ip_dns_resolver ~ip_dns_primary_git =
                [
                  "TARGET=hvt";
                  "EXTRA_FLAGS=--ipv4-gateway=10.0.0.1 --remote \
-                  git@10.0.0.1:relay.git --ssh-key " ^ ssh_key ^ " --domain "
+                  git@10.0.0.1:relay.git --ssh-key=" ^ ssh_key ^ " --domain "
                  ^ smtp_domain ^ " --hostname " ^ smtp_domain ^ " --dns-key="
                  ^ dns_personal_key ^ " --postmaster hostmaster@" ^ smtp_domain;
                ];
@@ -126,7 +126,7 @@ let v ~ip_dns_resolver ~ip_dns_primary_git =
                "--destination=" ^ Ipaddr.V4.to_string ip_signer;
              ]);
          memory = 512;
-         network = "br1";
+         network = "br0";
        }
   in
   let ip_submission = get_ip config_submission in

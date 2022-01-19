@@ -28,8 +28,8 @@ let v ~ip_dns_resolver ~ip_dns_primary_git ~ip_relay ~cert_fingerprint_relay =
              args =
                [
                  "TARGET=hvt";
-                 "EXTRA_FLAGS=--ipv4-gateway=10.0.0.1 --domain " ^ smtp_domain
-                 ^ " --postmaster hostmaster@" ^ smtp_domain;
+                 "EXTRA_FLAGS=--ipv4-gateway=10.0.0.1 --domain "
+                 ^ smtp_domain ^ " --postmaster hostmaster@" ^ smtp_domain;
                ];
            }
            repo_ptt
@@ -50,7 +50,7 @@ let v ~ip_dns_resolver ~ip_dns_primary_git ~ip_relay ~cert_fingerprint_relay =
                Ipaddr.V4.to_string ip_relay;
              ]);
          memory = 512;
-         network = "br1";
+         network = "br0";
        }
   in
   let ip_spamfilter = get_ip config_spamfilter in
@@ -63,8 +63,8 @@ let v ~ip_dns_resolver ~ip_dns_primary_git ~ip_relay ~cert_fingerprint_relay =
              args =
                [
                  "TARGET=hvt";
-                 "EXTRA_FLAGS=--ipv4-gateway=10.0.0.1 --domain " ^ smtp_domain
-                 ^ " --hostname " ^ smtp_domain ^ " --dns-key="
+                 "EXTRA_FLAGS=--ipv4-gateway=10.0.0.1 --domain "
+                 ^ smtp_domain ^ " --hostname " ^ smtp_domain ^ " --dns-key="
                  ^ dns_personal_key ^ " --postmaster hostmaster@" ^ smtp_domain;
                ];
            }
@@ -74,7 +74,7 @@ let v ~ip_dns_resolver ~ip_dns_primary_git ~ip_relay ~cert_fingerprint_relay =
        and+ ip_dns_resolver = ip_dns_resolver
        and+ ip_spamfilter = ip_spamfilter in
        {
-         E.Config.Pre.service = "ptt-spamfilter";
+         E.Config.Pre.service = "ptt-verifier";
          unikernel;
          args =
            (fun ip ->
@@ -88,7 +88,7 @@ let v ~ip_dns_resolver ~ip_dns_primary_git ~ip_relay ~cert_fingerprint_relay =
                Ipaddr.V4.to_string ip_spamfilter;
              ]);
          memory = 512;
-         network = "br1";
+         network = "br0";
        }
   in
   let ip_verifier = get_ip config_verifier in

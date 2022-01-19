@@ -45,7 +45,7 @@ let config_dns_primary_git =
        args =
          (fun ip -> [ "--ipv4=" ^ Ipaddr.V4.to_string ip ^ "/24"; "--axfr" ]);
        memory = 256;
-       network = "br1";
+       network = "br0";
      }
 
 let ip_dns_primary_git = get_ip config_dns_primary_git
@@ -79,11 +79,10 @@ let config_dns_letsencrypt_secondary ~ip_dns_primary_git =
          (fun ip ->
            [
              "--ipv4=" ^ Ipaddr.V4.to_string ip ^ "/24";
-             "--production";
              "--dns-server=" ^ Ipaddr.V4.to_string ip_dns_primary_git;
            ]);
        memory = 256;
-       network = "br1";
+       network = "br0";
      }
 
 (* DNS RESOLVER *)
@@ -105,7 +104,7 @@ let config_dns_resolver =
        unikernel;
        args = (fun ip -> [ "--ipv4=" ^ Ipaddr.V4.to_string ip ^ "/24" ]);
        memory = 256;
-       network = "br1";
+       network = "br0";
      }
 
 let ip_dns_resolver = get_ip config_dns_resolver

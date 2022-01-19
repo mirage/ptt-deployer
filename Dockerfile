@@ -43,6 +43,6 @@ RUN echo 'deb [arch=amd64] https://download.docker.com/linux/debian buster stabl
 RUN apt-get update && apt-get install docker-ce -y --no-install-recommends
 WORKDIR /var/lib/ocurrent
 ENTRYPOINT ["dumb-init", "/usr/local/bin/ocurrent-deployer"]
-COPY --from=build /src/_build/install/default/bin/ocurrent-deployer /usr/local/bin/
+COPY --from=build /src/_build/install/default/bin/ptt-deployer /usr/local/bin/
 COPY --from=build-albatross /home/opam/.opam/4.12/bin/albatross-client-local /usr/local/bin/
 COPY --from=build-albatross /home/opam/.opam/4.12/bin/solo5-elftool /var/lib/albatross/

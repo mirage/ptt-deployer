@@ -2,6 +2,7 @@ module Github = Current_github
 module Git = Current_git
 module R = Rresult.R
 module Build_docker = Build.Make (Docker)
+open Config
 
 let docker dockerfile ~name ~git targets =
   let build_info = { Docker.dockerfile; args = [] } in
@@ -9,9 +10,6 @@ let docker dockerfile ~name ~git targets =
     targets |> List.map (fun (branch, service) -> (branch, { Docker.service }))
   in
   (build_info, deploys, git, name)
-
-let dns_primary_git_ssh_key = ""
-let dns_primary_git_personal_key = ""
 
 (* UNIKERNELS *)
 open Current.Syntax
@@ -37,7 +35,7 @@ let config_dns_primary_git =
                 "--ipv4-gateway=10.0.0.1";
                 "--axfr";
                 "--remote=git@10.0.0.1:zone.git";
-                "--ssh-key=" ^ dns_primary_git_ssh_key;
+                "--ssh-key=" ^ ssh_key;
               ])
          repo
      in
@@ -68,9 +66,9 @@ let config_dns_letsencrypt_secondary ~ip_dns_primary_git =
            (Current.return
               [
                 "--ipv4-gateway=10.0.0.1";
-                "--dns-key=" ^ dns_primary_git_personal_key;
-                "--account-key-seed=4+R+H/SstrNqP9giaNoeJN9ccghDFI1CpCbaVAOI8yk=";
-                "--email=admin@ptt.mail";
+                "--dns-key=" ^ dns_personal_key;
+                "--account-key-seed=" ^ letsencrypt_account_key;
+                "--email=postmaster@" ^ smtp_domain;
               ])
          repo
      and+ ip_dns_primary_git = ip_dns_primary_git in
@@ -99,7 +97,7 @@ let config_dns_resolver =
        in
        E.Unikernel.of_git ~mirage_version:`Mirage_3
          ~config_file:(Current.return (Fpath.v "config.ml"))
-         ~args:(Current.return [ "--ipv4-gateway=10.0.0.1"; "-l"; "debug" ])
+         ~args:(Current.return [ "--ipv4-gateway=10.0.0.1" ])
          repo
      in
      {
@@ -152,7 +150,7 @@ let v () =
           ip_dns_letsencrypt_secondary,
           [] );
       ]
-      @ Ocaml_ci_dev_smtp.v ~ip_dns_resolver ~ip_dns_primary_git
+      @ SMTP.v ~ip_dns_resolver ~ip_dns_primary_git
     in
     let _published, monitors =
       unikernels_to_deploy

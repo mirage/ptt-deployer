@@ -22,5 +22,7 @@
   fmt
   lwt
   cmdliner
-  current-albatross-deployer
+  albatross
+  obuilder-spec
+  github-unix
   (ocaml (>= 4.08.0))))

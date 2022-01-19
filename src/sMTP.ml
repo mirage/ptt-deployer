@@ -30,9 +30,9 @@ let v ~ip_dns_resolver ~ip_dns_primary_git =
              args =
                [
                  "TARGET=hvt";
-                 "EXTRA_FLAGS=--ipv4-gateway=10.0.0.1 --remote \
-                  git@10.0.0.1:relay.git --ssh-key rsa:" ^ ssh_key
-                 ^ " --domain " ^ smtp_domain ^ "--postmaster hostmaster@"
+                 "EXTRA_FLAGS=--ipv4-gateway=192.168.1.2 --remote \
+                  git@192.168.1.2:relay.git --ssh-key rsa:" ^ ssh_key
+                 ^ " --domain " ^ smtp_domain ^ " --postmaster hostmaster@"
                  ^ smtp_domain;
                ];
            }
@@ -65,7 +65,7 @@ let v ~ip_dns_resolver ~ip_dns_primary_git =
              args =
                [
                  "TARGET=hvt";
-                 "EXTRA_FLAGS=--ipv4-gateway=10.0.0.1 --dns-key="
+                 "EXTRA_FLAGS=--ipv4-gateway=192.168.1.2 --dns-key="
                  ^ dns_personal_key ^ " --selector ptt --domain " ^ smtp_domain
                  ^ " --private-key=" ^ dkim_key ^ " --postmaster hostmaster@"
                  ^ smtp_domain;
@@ -103,8 +103,8 @@ let v ~ip_dns_resolver ~ip_dns_primary_git =
              args =
                [
                  "TARGET=hvt";
-                 "EXTRA_FLAGS=--ipv4-gateway=10.0.0.1 --remote \
-                  git@10.0.0.1:relay.git --ssh-key " ^ ssh_key ^ " --domain "
+                 "EXTRA_FLAGS=--ipv4-gateway=192.168.1.2 --remote \
+                  git@192.168.1.2:relay.git --ssh-key " ^ ssh_key ^ " --domain "
                  ^ smtp_domain ^ " --hostname " ^ smtp_domain ^ " --dns-key="
                  ^ dns_personal_key ^ " --postmaster hostmaster@" ^ smtp_domain;
                ];

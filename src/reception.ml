@@ -28,8 +28,8 @@ let v ~ip_dns_resolver ~ip_dns_primary_git ~ip_relay ~cert_fingerprint_relay =
              args =
                [
                  "TARGET=hvt";
-                 "EXTRA_FLAGS=--ipv4-gateway=10.0.0.1 --domain " ^ smtp_domain
-                 ^ " --postmaster hostmaster@" ^ smtp_domain;
+                 "EXTRA_FLAGS=--ipv4-gateway=192.168.1.2 --domain "
+                 ^ smtp_domain ^ " --postmaster hostmaster@" ^ smtp_domain;
                ];
            }
            repo_ptt
@@ -63,8 +63,8 @@ let v ~ip_dns_resolver ~ip_dns_primary_git ~ip_relay ~cert_fingerprint_relay =
              args =
                [
                  "TARGET=hvt";
-                 "EXTRA_FLAGS=--ipv4-gateway=10.0.0.1 --domain " ^ smtp_domain
-                 ^ " --hostname " ^ smtp_domain ^ " --dns-key="
+                 "EXTRA_FLAGS=--ipv4-gateway=192.168.1.2 --domain "
+                 ^ smtp_domain ^ " --hostname " ^ smtp_domain ^ " --dns-key="
                  ^ dns_personal_key ^ " --postmaster hostmaster@" ^ smtp_domain;
                ];
            }

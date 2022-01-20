@@ -689,3 +689,30 @@ emails will be redirected to your real email address.
 
 `albatross-local-client` is your friend to introspect unikernels. The provided
 website too to get name of unikernels and IP addresses.
+
+[mirage]: https://mirage.io/
+[albatross]: https://github.com/roburio/albatross
+[pipeline.ml]: ./src/pipeline.ml
+[Equinix]: https://equinix.com/
+[ASN.1]: https://en.wikipedia.org/wiki/ASN.1
+[docker]: https://docs.docker.com/engine/install/debian/
+[tap]: https://en.wikipedia.org/wiki/TUN/TAP
+[bond]: https://wiki.debian.org/Bonding
+[ptt]: https://github.com/dinosaure/ptt
+[kvm]: https://fr.wikipedia.org/wiki/Kernel-based_Virtual_Machine
+[mrmime]: https://github.com/mirage/mrmime
+[uspf]: https://github.com/dinosaure/uspf
+[ocaml-dkim]: https://github.com/dinosaure/ocaml-dkim
+[spamtacus]: https://github.com/mirage/spamtacus
+[colombe]: https://github.com/mirage/colombe
+[ocaml-dmarc]: https://github.com/dinosaure/ocaml-dmarc
+[ocaml-dns]: https://github.com/mirage/ocaml-dns
+[ocurrent]: https://github.com/ocurrent/ocurrent
+[current\_albatross\_deployer]: https://github.com/TheLortex/current-albatross-deployer
+[xen]: https://xenproject.org/
+[dns-primary-git]: https://github.com/roburio/dns-primary-git
+[nsupdate]: https://linux.die.net/man/8/nsupdate
+[./src/config.ml]: ./src/config.ml
+[zone-file]: https://en.wikipedia.org/wiki/Zone_file
+[gandi]: https://gandi.net
+[./src/pipeline.ml]: ./src/pipeline.ml

@@ -367,14 +367,14 @@ mirage$ git clone https://github.com/TheLortex/current-albatross-deployer.git
 mirage$ cd current-albatross-deployer
 mirage$ opam pin add -yn .
 mirage$ opam depext current-albatross-deployer
-mirage$ opam install --only-deps -t current-albatross-deployer
+mirage$ opam install --deps-only -t current-albatross-deployer
 mirage$ dune build -p current-albatross-deployer
 mirage$ cd lib/iptables-daemon/packaging/Linux
 mirage$ sudo ./install.sh
 mirage$ sudo systemctl enable current-iptables-daemon
 ```
 
-As `albatross`, we maid a new daemon which is able to call `iptables` to set
+As `albatross`, we made a new daemon which is able to call `iptables` to set
 some rules.
 
 ### `ptt-deployer`
@@ -397,6 +397,15 @@ git$ cd ptt-deployer.git
 git$ git init --bare
 git$ exit
 ```
+
+Git must be initialised before the next section
+
+```shell=bash
+$ git config --global user.email "you@example.com"
+$ git config --global user.name "Your Name"
+```
+
+XXX Possibly just say run `ssh-keygen` then `ssh-copy-id git@localhost` ?
 
 You should save your `id_rsa.pub` into `/home/git/.ssh/authorized_keys` to
 allow you to push/pull local Git repositories (_via_ `ssh-copy-id`). We must
@@ -463,7 +472,10 @@ generator. It's possible to use an _ed25519_ key (which smaller) but for
 convenience, we will use this one. You need to do 2 operations:
 - add the public key (the second line which starts with `ssh-rsa`) into
   `/home/git/.ssh/authorized_keys`
-- set [./src/config.ml][] with the "seed" as below
+- set [~/ptt-deployer/src/config.ml][] with the "seed" as below
+
+XXX When editing config.ml do you need to remove the `failwith` bit?
+XXX I wasn't sure where `./src/config.ml`
 
 ```ocaml=
 let ssh_key : string = "rsa:lShNY3l2He27hG3BBPPeyUdmP+hmZ4AppWmrytrm"
@@ -501,6 +513,9 @@ the [zone file][zone-file] of your domain. By this way, we will describe where
 is your SMTP service, who own it and some others stuffs like SPF/DKIM
 information.
 
+XXX where should be cloned this to?  `~/` or within `ppt-deployer`?
+XXX should MX really be `ptt.wtf`
+
 So we need to clone our `zone.git` and add our new domain `mirage.ptt`:
 ```shell=bash
 mirage$ who
@@ -510,7 +525,7 @@ mirage$ cd zone
 mirage$ cat >mirage.ptt <<EOF
 > \$ORIGIN mirage.ptt.
 > \$TTL 3600
-> @	SOA	ns1	posttmaster	0	86400	7200	1048576	3600
+> @	SOA	ns1	postmaster	0	86400	7200	1048576	3600
 > @     NS      ns1
 > @     MX      10      ptt.wtf.
 > @     A       147.75.X.Y
@@ -584,10 +599,10 @@ was perfectly added.
 
 ## Run our `ptt-deployer` service
 
-It's time to run our service. First, we need to install We need to install
+It's time to run our service. First, we need to install
 [Docker][docker] and configure it a bit to allow us to use `buildkit`:
 ```shell=bash
-root$ echo '{ "features": { "buildkit": true } }" >> /etc/docker/daemon.json
+root$ echo '{ "features": { "buildkit": true } }' >> /etc/docker/daemon.json
 ```
 
 Now we will build `ptt-deployer` with [Docker][docker], prepare the service and
@@ -596,6 +611,11 @@ run it:
 mirage$ pwd
 /home/mirage
 mirage$ sudo usermod -aG docker mirage
+```
+
+XXX after you do usermod, you must sign out and back in again before you can run docker commands
+
+```shell=bash
 mirage$ cd ptt-deployer
 mirage$ git rev-parse --abbrev-ref HEAD
 live
@@ -616,7 +636,7 @@ $ docker service create --name infra_ptt-deployer -p 8080:8080 \
   --mount type=bind,source=/var/run/docker.sock,destination=/var/run/docker.sock \
   --mount type=bind,source=/var/run/albatross/util/vmmd.sock,destination=/var/run/albatross/util/vmmd.sock \
   --mount type=bind,source=/home/git,destination=/git,readonly \
-  --mount type=bind,source=/run/current-iptables-daemon/current-iptables-daemon.sock,destination=/var/run/current-iptables-daemon/current-iptables-daemon.sock
+  --mount type=bind,source=/run/current-iptables-daemon/current-iptables-daemon.sock,destination=/var/run/current-iptables-daemon/current-iptables-daemon.sock \
   localhost:5000/ptt-deployer
 ```
 
@@ -687,7 +707,7 @@ Finally, you are able to **submit** an email into your `mirage.ptt` authority
 and people can send an email to you _via_  `<username>@mirage.ptt`. These
 emails will be redirected to your real email address.
 
-`albatross-local-client` is your friend to introspect unikernels. The provided
+`albatross-client-local` is your friend to introspect unikernels. The provided
 website too to get name of unikernels and IP addresses.
 
 [mirage]: https://mirage.io/
